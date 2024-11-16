@@ -32,7 +32,7 @@ Steps
 
     Clone the repository:
 
-git clone https://github.com/ChidexWorld/todo-list.git  
+git clone https://github.com/ChidexWorld//To_do_list.git  
 
 Navigate to the project directory:
 
