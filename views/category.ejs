@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Categories</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <h1>Add Categories</h1>
+
+    <% if (error) { %>
+        <div style="color: red;">
+            <%= error %>
+        </div>
+        <% } %>
+
+            <!-- Form to add a new category -->
+            <form action="/category/add" method="POST" class="category-form">
+                <input type="text" name="name" placeholder="Enter category name" required>
+                <button type="submit">Add Category</button>
+                <a href="/">Back to Home Page</a>
+
+            </form>
+
+</body>
+
+</html>

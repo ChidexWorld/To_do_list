@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <h1>Add New Task</h1>
+
+    <form action="/task/newTasks" method="post">
+        <div>
+            <label for="title">Title:</label>
+            <input id="title" type="text" name="title" placeholder="Title" required>
+
+            <% if(errors) { %>
+                <p style="color: red">
+                    <%= errors.title %>
+                </p>
+                <% } %>
+        </div>
+        <br><br>
+        <div>
+
+            <label for="description">Description:</label>
+            <textarea id="description" type="text" name="description" placeholder="Description" required></textarea>
+
+            <% if(errors) { %>
+                <p style="color: red">
+                    <%= errors.description %>
+                </p>
+                <% } %>
+        </div>
+        <br><br>
+        <div>
+            <label for="dueDate">Due Date:</label>
+            <input id="dueDate" type="date" name="due_date" required>
+
+            <% if(errors ) { %>
+                <p style="color: red">
+                    <%= errors.due_date %>
+                </p>
+                <% } %>
+        </div>
+        <br><br>
+        <div>
+            <label for="category">Category:</label>
+            <select id="category" name="categoryId" required>
+                
+                <% categories.forEach(category=> { %>
+                    <option value="<%= category.id %>">
+                        <%= category.name %>
+                    </option>
+                    <% }) %>
+            </select>
+            <% if(errors ) { %>
+                <p style="color: red">
+                    <%= errors.email %>
+                </p>
+                <% } %>
+        </div>
+        <br><br>
+        <button type="submit">Create Task</button>
+        <a href="/">Back to Home Page</a>
+
+    </form>
+
+</body>
+
+</html>

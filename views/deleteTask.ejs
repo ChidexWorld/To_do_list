@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Category</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <h1>Delete <%= task.title %>
+    </h1>
+
+    <form action="/task/delete" method="post" >
+        <h3>
+            Are you sure you want to delete <u>
+                <%= task.title %>
+            </u> Task
+        </h3>
+        <div><input type="hidden" name="id" value='<%= task.id %>'></div>
+        <button>Yes, Delete</button>
+        <a href="/">No, Don't Delete</a>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    padding: 0rem;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+    font-family: sans-serif;
+}
+
+button {
+    cursor: pointer;
+    height: 2rem;
+    width: 8rem;
+    border: none;
+    border-radius: 12px;
+}
+
+header {
+    display: flex;
+    padding: 0 2rem;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+}
+
+h1 {
+    text-align: center;
+}
+
+.navbar-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+li {
+    list-style-type: none;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    margin: 20px;
+}
+
+/* Sidebar */
+aside {
+    width: 200px;
+    background-color: #fff;
+    padding: 1em;
+    margin-right: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 1.2em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #007BFF;
+}
+
+.content {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.content h1 {
+    text-align: center;
+}
+
+.cate_container {
+    height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 1rem;
+    margin-top: 1rem;
+    background-color: #f4f4f4;
+    border-radius: 12px;
+}
+
+i {
+    cursor: pointer;
+}
+
+form {
+    margin-top: 5rem;
+    width: 100%;
+    max-width: 500px;
+    display: grid;
+    gap: 1rem;
+    place-content: center;
+    margin: 1rem auto;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.date,
+.cateName {
+    font-size: 14px;
+    color: #007BFF;
+}
+
+
+.title h2 {
+    text-align: left;
+}
+
+.task_content {
+    display: flex;
+    width: 60%;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 400;
+    font-size: 1.24rem;
+}
+
+.icon {
+    display: flex;
+    width: 30%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.check {
+    display: inline-block;
+    border: none;
+    box-shadow: none;
+}
+
+footer {
+    text-align: center;
+    margin: 2rem 0;
+}

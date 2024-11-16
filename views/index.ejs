@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+        <h1>Welcome To My To Do List Application </h1>
+
+        <main>
+
+            <aside>
+                <h2>CATEGORIES</h2>
+
+                <div>
+                    <% categories.forEach(category=> { %>
+                        <div class="cate_container">
+
+                            <h4>
+                                <%= category.name %>
+                            </h4>
+
+                            <div>
+                                <i onclick="window.location.href='category/edit/<%= category.id %>'"
+                                    class='ph ph-pencil-simple'></i>
+                                <i onclick="window.location.href='category/delete/<%= category.id %>'"
+                                    class="ph ph-trash"></i>
+                            </div>
+                        </div>
+                        <% }); %>
+
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <section class="content">
+                <h2>TASKS</h2>
+
+                <div>
+                    <% tasks.forEach(task=> { %>
+                        <div class="cate_container">
+
+                            <div class="task_content">
+                                <div class="title">
+                                    <h2 href="#">
+                                        <%= task.title%>
+                                    </h2>
+                                    <p href="#" class="date">
+                                        <%= task.due_date %>
+                                    </p>
+
+                                </div>
+
+                                <div>
+                                    <p>
+                                        <%= task.description %>
+                                    </p>
+                                    <p class="cateName">
+                                        <%= task.category_name %>
+                                    </p> <!-- Display category name -->
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="icon">
+                                <div style="display: flex;">
+                                    <i onclick="window.location.href='task/edit/<%= task.id %>'"
+                                        class='ph ph-pencil-simple'></i>
+                                    <i onclick="window.location.href='task/delete/<%= task.id %>'"
+                                        class="ph ph-trash"></i>
+                                </div>
+                                <form action="/task/updateTaskStatus" method="POST" class="check">
+                                    <input type="hidden" name="taskId" value="<%= task.id %>">
+                                    <input type="hidden" name="status"
+                                        value="<%= task.status === 'completed' ? 'pending' : 'completed' %>">
+
+                                    <label>
+                                        <%= task.status==='completed' ? 'Completed' : 'Pending...' %>
+                                    </label>
+                                    <input type="checkbox" onchange="this.form.submit()" <%=task.status==='completed'
+                                        ? 'checked disabled' : '' %> >
+                                </form>
+                            </div>
+                        </div>
+                        <% }); %>
+
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 &lt;ChidexWorld/&gt. All rights reserved.</p>
+        </footer>
+
+</body>
+
+</html>
