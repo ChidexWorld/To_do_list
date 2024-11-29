@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const isAuthenticated = require("./isAuthenticated");
 
-router.get("/category", (req, res) => {
+
+router.get("/category",isAuthenticated, (req, res) => {
   res.render("category", { error: undefined });
 });
 
 // CREATE: Add a new category
-router.post("/add", (req, res) => {
+router.post("/add",isAuthenticated, (req, res) => {
   const { name } = req.body;
 
   // Manual validation for 'name'
@@ -38,7 +40,7 @@ router.post("/add", (req, res) => {
 });
 
 // Show the edit form with the existing category name
-router.get("/edit/:id", (req, res) => {
+router.get("/edit/:id",isAuthenticated, (req, res) => {
   const categoryId = req.params.id;
   const userId = req.user.id;
 
@@ -55,7 +57,7 @@ router.get("/edit/:id", (req, res) => {
 });
 
 // UPDATE: Edit a category
-router.post("/edit/:id", (req, res) => {
+router.post("/edit/:id",isAuthenticated, (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
 
@@ -80,7 +82,7 @@ router.post("/edit/:id", (req, res) => {
 });
 
 // Show warning b4 deleting
-router.get("/delete/:id", (req, res) => {
+router.get("/delete/:id", isAuthenticated,(req, res) => {
  
    const categoryId = req.params.id;
    const userId = req.user.id;
@@ -97,7 +99,7 @@ router.get("/delete/:id", (req, res) => {
 });
 
 // DELETE: Remove a category
-router.post("/delete", (req, res) => {
+router.post("/delete", isAuthenticated,(req, res) => {
   const { id } = req.body;
 
   const sql = "DELETE FROM categories WHERE id = ?";

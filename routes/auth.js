@@ -136,8 +136,7 @@ passport.use(
           });
         }
 
-        const user = users[0];
-        console.log(user); // this user is always an array make sure to use index
+        const user = users[0]; // this user is always an array make sure to use index
 
         // Load hash from your password DB.
         //password is the received password from the input
@@ -154,7 +153,6 @@ passport.use(
               message: "Incorrect username or password.",
             });
           }
-          console.log("authenticated successfully", user);
           return cb(null, user); // user is authenticated successfully
           //after this you are to use express-session middleware
         });
@@ -167,21 +165,17 @@ passport.use(
 
 // Serialize user for the session
 passport.serializeUser((user, done) => {
-  console.log("Serializing user:", { id: user.id });
   done(null, user.id); // Store only the user ID in the session
 });
 
 //deserializeUser user
 passport.deserializeUser(function (id, cb) {
-  console.log("we are in deserializeUser");
-
   db.query("SELECT * FROM users WHERE id = ?", [id], function (err, user) {
     if (err) {
       console.error("Error deserializing user:", err);
       return cb(err); // Pass the error to Passport
     }
 
-    console.log(user[0]);
     return cb(null, user[0]);
   });
 });
@@ -197,8 +191,10 @@ router.post(
 );
 // render login form
 router.get("/login", (req, res) => {
+  const message = req.query.message; // Extract the message
+
   const error = req.flash("error")[0]; // Get the flash error message
-  res.render("login", { error }); // Pass the error to the EJS template
+  res.render("login", { error, message }); // Pass the error to the EJS template
 });
 
 // Logout route
@@ -212,7 +208,8 @@ router.get("/logout", (req, res) => {
       });
     }
     // Successfully logged out, redirect to the login page
-    return res.redirect("/login");
+    req.session.destroy(); // Optional: Clear the session completely
+    return res.redirect("/auth/login");
   });
 });
 

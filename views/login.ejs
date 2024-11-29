@@ -11,6 +11,11 @@
 
 <body>
     <h1>To do application</h1>
+    <% if (message) { %>
+        <small class="message">
+            <%= message %>
+        </small>
+        <% } %>
 
     <form action="/auth/loginUser" method="POST" enctype="application/x-www-form-urlencoded">
         <h1>Login in to your account</h1>

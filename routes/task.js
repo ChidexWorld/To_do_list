@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const isAuthenticated = require("./isAuthenticated");
 
 // Show the form to create a task
-router.get("/newTask", (req, res) => {
+router.get("/newTask", isAuthenticated, (req, res) => {
   const userId = req.user.id;
 
   const sql = "SELECT * FROM categories WHERE userId = ?"; // Assuming you have a categories table
@@ -14,7 +15,7 @@ router.get("/newTask", (req, res) => {
 });
 
 //insert new task
-router.post("/newTasks", (req, res) => {
+router.post("/newTasks", isAuthenticated, (req, res) => {
   const { title, description, due_date, categoryId } = req.body;
 
   const errors = {
@@ -82,7 +83,7 @@ router.post("/newTasks", (req, res) => {
 });
 
 // Show the edit form for a specific task
-router.get("/edit/:id", (req, res) => {
+router.get("/edit/:id", isAuthenticated, (req, res) => {
   const userId = req.user.id;
   const taskId = req.params.id;
 
@@ -100,7 +101,7 @@ router.get("/edit/:id", (req, res) => {
     const task = taskResults[0]; // Task details
 
     // Fetch categories to display in a dropdown
-    db.query(categorySql,[userId], (err, categories) => {
+    db.query(categorySql, [userId], (err, categories) => {
       if (err) {
         console.error("Error fetching categories:", err);
         return res.status(500).send("Server error");
@@ -112,7 +113,7 @@ router.get("/edit/:id", (req, res) => {
 });
 
 /// Update task details
-router.post("/edit/:id", (req, res) => {
+router.post("/edit/:id", isAuthenticated, (req, res) => {
   const { id } = req.params;
   const { title, description, due_date, categoryId } = req.body;
 
@@ -184,7 +185,7 @@ router.post("/edit/:id", (req, res) => {
   });
 });
 
-router.post("/updateTaskStatus", (req, res) => {
+router.post("/updateTaskStatus", isAuthenticated, (req, res) => {
   const { taskId, status } = req.body;
   const updateSql = "UPDATE tasks SET status = ? WHERE id = ?";
 
@@ -198,7 +199,7 @@ router.post("/updateTaskStatus", (req, res) => {
 });
 
 // Show warning b4 deleting
-router.get("/delete/:id", (req, res) => {
+router.get("/delete/:id", isAuthenticated, (req, res) => {
   const { id } = req.params;
 
   // Manual validation: Check if the id is a number
@@ -218,7 +219,7 @@ router.get("/delete/:id", (req, res) => {
 });
 
 // DELETE: Remove a task
-router.post("/delete", (req, res) => {
+router.post("/delete", isAuthenticated, (req, res) => {
   const { id } = req.body;
 
   const sql = "DELETE FROM tasks WHERE id = ?";
@@ -229,3 +230,4 @@ router.post("/delete", (req, res) => {
 });
 
 module.exports = router;
+  

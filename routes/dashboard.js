@@ -1,26 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-
-// Middleware to check if a user is authenticated
-function isAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    // Check if the user is logged in
-    return next(); // Proceed to the next middleware or route handler
-  }
-  if (req.user) return next();
-  res.redirect("/auth/login"); // Redirect to login if not authenticated
-}
-
-router.get("/dashboard", isAuthenticated, (req, res) => {
-  console.log("i am in my dashboard");
-  console.log({
-    getUserInfo: req.user,
-    session: req.session,
-    sessionID: req.sessionID,
-  });
-  res.send(`Welcome to your dashboard, ${req.user.username}!, ${req.user.id}`);
-});
+const isAuthenticated = require("./isAuthenticated");
 
 // Define a sample route to render an EJS page
 router.get("/", isAuthenticated, (req, res) => {
@@ -58,6 +39,7 @@ router.get("/", isAuthenticated, (req, res) => {
         title: "Home Page",
         categories: categories.length > 0 ? categories : null, // If no categories, pass null
         tasks: tasks.length > 0 ? tasks : null, // If no tasks, pass null
+        user: req.user,
       });
     });
   });

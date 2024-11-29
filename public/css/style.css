@@ -144,11 +144,16 @@ form {
     box-shadow: none;
 }
 
-small{
+small {
     color: red;
 }
 
 footer {
     text-align: center;
     margin: 2rem 0;
+}
+
+.message {
+  display: flex;
+  justify-content: center;
 }
