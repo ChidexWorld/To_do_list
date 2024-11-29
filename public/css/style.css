@@ -144,6 +144,10 @@ form {
     box-shadow: none;
 }
 
+small{
+    color: red;
+}
+
 footer {
     text-align: center;
     margin: 2rem 0;

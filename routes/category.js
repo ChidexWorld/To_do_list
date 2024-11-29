@@ -21,8 +21,10 @@ router.post("/add", (req, res) => {
     });
   }
 
-  const sql = "INSERT INTO categories (name) VALUES (?)";
-  db.query(sql, [name], (err) => {
+  const userId = req.user.id;
+
+  const sql = "INSERT INTO categories (name, userId) VALUES (?, ?)";
+  db.query(sql, [name, userId], (err) => {
     console.log(err);
     if (err) {
       return res.render("category", {
@@ -37,14 +39,17 @@ router.post("/add", (req, res) => {
 
 // Show the edit form with the existing category name
 router.get("/edit/:id", (req, res) => {
-  const { id } = req.params;
-  const sql = "SELECT * FROM categories WHERE id = ?";
-  db.query(sql, [id], (err, results) => {
+  const categoryId = req.params.id;
+  const userId = req.user.id;
+
+  const sql = "SELECT * FROM categories WHERE id = ? AND userId = ?";
+  db.query(sql, [categoryId, userId], (err, results) => {
     if (err) return res.sendStatus(500);
     if (results.length > 0) {
       res.render("editCategory", { category: results[0], error: undefined }); // Pass category data to the form
     } else {
-      res.send("Category not found");
+      return res.render("error", { error: "Category not found" });
+      // res.send("Category not found");
     }
   });
 });
@@ -76,22 +81,19 @@ router.post("/edit/:id", (req, res) => {
 
 // Show warning b4 deleting
 router.get("/delete/:id", (req, res) => {
-  const { id } = req.params;
+ 
+   const categoryId = req.params.id;
+   const userId = req.user.id;
 
-  // Manual validation: Check if the id is a number
-  if (isNaN(id)) {
-    return res.status(400).send("Invalid category ID.");
-  }
-
-  const sql = "SELECT * FROM categories WHERE id = ?";
-  db.query(sql, [id], (err, results) => {
-    if (err) return res.sendStatus(500);
-    if (results.length > 0) {
-      res.render("deleteCategory", { category: results[0] }); // Pass category data to the form
-    } else {
-      res.send("Category not found");
-    }
-  });
+   const sql = "SELECT * FROM categories WHERE id = ? AND userId = ?";
+   db.query(sql, [categoryId, userId], (err, results) => {
+     if (err) return res.sendStatus(500);
+     if (results.length > 0) {
+       res.render("deleteCategory", { category: results[0] }); // Pass category data to the form
+     } else {
+       res.send("Category not found");
+     }
+   });
 });
 
 // DELETE: Remove a category

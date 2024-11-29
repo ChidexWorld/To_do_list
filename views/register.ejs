@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login To do app</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <form action="/auth/registerUser" method="POST" enctype="application/x-www-form-urlencoded">
+        <div>
+            <label for="userName">UserName:</label>
+            <input type="text" name="username" id="username" required>
+            <br>
+            <% if (errors.username) { %><small>
+                    <%= errors.username[0] %>
+                </small>
+                <% } %>
+        </div>
+
+        <div>
+            <label for="email">Email:</label>
+            <input name="email" id="email" type="email" required>
+            <br>
+            <% if (errors.email) { %><small>
+                    <%= errors.email[0] %>
+                </small>
+                <% } %>
+
+        </div>
+
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+            <br>
+            <% if (errors.password) { %><small>
+                    <%= errors.password[0] %>
+                </small>
+                <% } %>
+        </div>
+        <div>
+            <label for="confirm">Confirm Password:</label>
+            <input type="password" name="confirm" id="confirm" placeholder="Confirm Password" required>
+            <br>
+            <% if (errors.confirm) { %><small>
+                    <%= errors.confirm[0] %>
+                </small>
+                <% } %>
+        </div>
+
+        <button type="submit">Create Account</button>
+        <a href="http://localhost:3000/auth/login">i already have an account</a>
+
+    </form>
+</body>
+
+</html>

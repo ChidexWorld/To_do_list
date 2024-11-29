@@ -4,9 +4,11 @@ const db = require("../db");
 
 // Show the form to create a task
 router.get("/newTask", (req, res) => {
-  const sql = "SELECT * FROM categories"; // Assuming you have a categories table
-  db.query(sql, (err, categories) => {
-    if (err) throw err;
+  const userId = req.user.id;
+
+  const sql = "SELECT * FROM categories WHERE userId = ?"; // Assuming you have a categories table
+  db.query(sql, [userId], (err, categories) => {
+    if (err) return res.render("error", { error: err });
     res.render("task", { categories, errors: undefined });
   });
 });
@@ -62,29 +64,34 @@ router.post("/newTasks", (req, res) => {
     return db.query(sql, (err, categories) => {
       if (err) {
         console.error("Error fetching categories:", err);
-        return res.status(500).send("Server error");
+        return res.render("error", { error: err });
       }
       res.render("task", { categories, errors });
     });
   }
-
+  const userId = req.user.id;
   const sql =
-    "INSERT INTO tasks (title, description, due_date, category_id) VALUES (?, ?, ?, ?)";
-  db.query(sql, [title, description, due_date, categoryId], (err) => {
-    if (err) return res.status(500).send("Server error", err);
+    "INSERT INTO tasks (title, description, due_date, categoryId, userId) VALUES (?, ?, ?, ?,?)";
+  db.query(sql, [title, description, due_date, categoryId, userId], (err) => {
+    if (err) {
+      console.log("error in insert", err);
+      return res.render("error", { error: err });
+    }
     res.redirect("/"); // Redirect to the list of tasks
   });
 });
 
 // Show the edit form for a specific task
 router.get("/edit/:id", (req, res) => {
-  const { id } = req.params;
+  const userId = req.user.id;
+  const taskId = req.params.id;
 
   // Fetch task details and categories
-  const taskSql = "SELECT * FROM tasks WHERE id = ?";
-  const categorySql = "SELECT * FROM categories";
+  const taskSql = "SELECT * FROM tasks WHERE id = ? AND userId = ?";
+  const categorySql = "SELECT * FROM categories WHERE userId = ?";
 
-  db.query(taskSql, [id], (err, taskResults) => {
+  // Fetch the task to ensure it belongs to the logged-in user
+  db.query(taskSql, [taskId, userId], (err, taskResults) => {
     if (err) {
       console.error("Error fetching task:", err);
       return res.status(500).send("Server error");
@@ -93,7 +100,7 @@ router.get("/edit/:id", (req, res) => {
     const task = taskResults[0]; // Task details
 
     // Fetch categories to display in a dropdown
-    db.query(categorySql, (err, categories) => {
+    db.query(categorySql,[userId], (err, categories) => {
       if (err) {
         console.error("Error fetching categories:", err);
         return res.status(500).send("Server error");
@@ -157,12 +164,17 @@ router.post("/edit/:id", (req, res) => {
         console.error("Error fetching categories:", err);
         return res.status(500).send("Server error");
       }
-      res.render("editTask", { task: { id, title, description, due_date, categoryId }, categories, errors });
+      res.render("editTask", {
+        task: { id, title, description, due_date, categoryId },
+        categories,
+        errors,
+      });
     });
   }
 
   // Update the task if validation passed
-  const sql = "UPDATE tasks SET title = ?, description = ?, due_date = ?, category_id = ? WHERE id = ?";
+  const sql =
+    "UPDATE tasks SET title = ?, description = ?, due_date = ?, categoryId = ? WHERE id = ?";
   db.query(sql, [title, description, due_date, categoryId, id], (err) => {
     if (err) {
       console.error("Error updating task:", err);
@@ -205,17 +217,15 @@ router.get("/delete/:id", (req, res) => {
   });
 });
 
-// DELETE: Remove a category
+// DELETE: Remove a task
 router.post("/delete", (req, res) => {
   const { id } = req.body;
 
   const sql = "DELETE FROM tasks WHERE id = ?";
   db.query(sql, [id], (err) => {
     if (err) return res.sendStatus(500);
-    res.redirect("/");  
+    res.redirect("/");
   });
 });
-
-
 
 module.exports = router;
